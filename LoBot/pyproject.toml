@@ -1,0 +1,23 @@
+[project]
+name = "LoBot"
+version = "0.1.0"
+description = "LoBot"
+readme = "README.md"
+requires-python = ">=3.10, <4.0"
+dependencies = [
+    "nonebot2[fastapi]>=2.5.0",
+    "nonebot-adapter-console>=0.10.0",
+]
+
+[tool.nonebot]
+plugin_dirs = ["LoBot/lo_bot/plugins"]
+builtin_plugins = ["echo"]
+
+[tool.nonebot.adapters]
+nonebot-adapter-console = [
+    { name = "Console", module_name = "nonebot.adapters.console" }
+]
+"@local" = []
+
+[tool.nonebot.plugins]
+"@local" = []
