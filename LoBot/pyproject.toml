@@ -10,7 +10,7 @@ dependencies = [
 ]
 
 [tool.nonebot]
-plugin_dirs = ["LoBot/lo_bot/plugins"]
+plugin_dirs = ["LoBot/lo_bot/src/plugins"]
 builtin_plugins = ["echo"]
 
 [tool.nonebot.adapters]
