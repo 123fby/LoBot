@@ -1,0 +1,9 @@
+#python缓存
+__pycache__/
+#编译器位置
+.idea/
+.vscode/
+
+#环境密钥
+.env
+.env.prod
