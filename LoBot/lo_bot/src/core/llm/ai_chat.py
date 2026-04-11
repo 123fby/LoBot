@@ -21,7 +21,4 @@ async def chat(prompt:str) -> str:
      )
         return response.choices[0].message.content.strip()
     except Exception as e:
-        return f"AI 调用失败: {str(e)}"
-if __name__ == "__main__":
-    import asyncio
-    print(asyncio.run(chat("你好"))  )      
+        return f"AI 调用失败: {str(e)}" 
