@@ -5,7 +5,6 @@ from nonebot.rule import to_me
 from nonebot.adapters import Message
 from nonebot.params import CommandArg,ArgPlainText
 from nonebot.matcher import Matcher
-from nonebot.adapters.console import MessageSegment
 from .config import Config
 
 from random import choice
@@ -35,7 +34,7 @@ async def divination_handle(matcher:Matcher,args: Message=CommandArg()):
     if args.extract_plain_text():
         args=re.search(r"(占卜)",args)
         matcher.set_arg("question",args.group(1))
-@divination.got("question", prompt=MessageSegment.emoji("question")+"请输入占卜问题")
+@divination.got("question", prompt="请输入占卜问题")
 async def divination_got(question: str=ArgPlainText("question")):
     luck_level=choice(content["luck_levels"])
     phrases=choice(luck_level["phrases"])

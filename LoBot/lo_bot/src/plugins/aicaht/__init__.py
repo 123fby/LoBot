@@ -1,7 +1,6 @@
 from nonebot import get_plugin_config
 from nonebot.plugin import PluginMetadata
 from nonebot import on_command
-from nonebot.adapters.console import MessageSegment
 from nonebot.params import CommandArg,ArgPlainText
 from nonebot.matcher import Matcher
 from nonebot.adapters import Message

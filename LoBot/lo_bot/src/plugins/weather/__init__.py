@@ -4,7 +4,6 @@ from nonebot.plugin import PluginMetadata
 from nonebot import on_command
 from nonebot.rule import to_me,Rule
 from nonebot.adapters import Message,Event
-from nonebot.adapters.console import Bot,MessageSegment
 from nonebot.params import CommandArg,ArgPlainText
 from nonebot.matcher import Matcher
 
@@ -56,8 +55,8 @@ async def handle_function( matcher: Matcher,args: Message=CommandArg()):
     #     await weather.finish(f"在{location}的天气是...")#finish会导致后续程序不会执行，send不会
     if args.extract_plain_text():
         matcher.set_arg("location",args)
-@weather.got("location", prompt=MessageSegment.emoji("question")+"请输入地名")#如果key未被设置,会提示用户输入地名
-async def got_location(bot: Bot,location:str =ArgPlainText()):#ArgPlainText()表示参数为纯文本，不会包含其他字符
+@weather.got("location", prompt="请输入地名")#如果key未被设置,会提示用户输入地名
+async def got_location(location:str =ArgPlainText()):#ArgPlainText()表示参数为纯文本，不会包含其他字符
     if location not in ["北京","上海","广州","深圳"]:
         await weather.reject(f"你查询的城市:{location}不支持，请重新输入")
     await weather.finish(
@@ -73,6 +72,5 @@ async def got_location(bot: Bot,location:str =ArgPlainText()):#ArgPlainText()表
             )
         )  
       )
-    await bot.bell()#响铃
 
 
