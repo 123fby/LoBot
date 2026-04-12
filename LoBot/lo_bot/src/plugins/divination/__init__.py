@@ -33,7 +33,8 @@ with open(Path(__file__).parent.joinpath("content.json"),"r",encoding="utf-8") a
 @divination.handle()
 async def divination_handle(matcher:Matcher,args: Message=CommandArg()):
     if args.extract_plain_text():
-        matcher.set_arg("question",re.search(r"(占卜)",args))
+        args=re.search(r"(占卜)",args)
+        matcher.set_arg("question",args.group(1))
 @divination.got("question", prompt=MessageSegment.emoji("question")+"请输入占卜问题")
 async def divination_got(question: str=ArgPlainText("question")):
     luck_level=choice(content["luck_levels"])

@@ -60,7 +60,7 @@ async def handle_function( matcher: Matcher,args: Message=CommandArg()):
 async def got_location(bot: Bot,location:str =ArgPlainText()):#ArgPlainText()表示参数为纯文本，不会包含其他字符
     if location not in ["北京","上海","广州","深圳"]:
         await weather.reject(f"你查询的城市:{location}不支持，请重新输入")
-    await weather.send(
+    await weather.finish(
         MessageSegment.markdown(
             inspect.cleandoc(#清理多行字符串的多余缩进，统一格式
                   f"""
