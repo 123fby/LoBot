@@ -1,9 +1,13 @@
 from openai import AsyncOpenAI
 import os
 from dotenv import load_dotenv
-load_dotenv()
+import toml
+from pathlib import Path
 
-class AIChat:
+load_dotenv()
+with open(Path("lo_bot/src/core/memory/character_profile.toml"),"r",encoding="utf-8") as f:
+    character_profile=toml.load(f)
+class LLMClient:
     def __init__(self):
         self.API_KEY:str=os.getenv("API_KEY")
         self.BASE_URL:str=os.getenv("BASE_URL")
@@ -14,10 +18,12 @@ class AIChat:
         )
         self.msg=[]
         self.rsp:str=""
-        self.msg.append({"role":"system","content":"你是龙洛洛,是个阳光开朗的女孩"})   
-    async def chat(self,prompt:str) -> str:
+        self.user_history:str=""
+        self.msg.append({"role":"system","content":f"你是{character_profile['name']},以下是你的个人信息:{character_profile}"})   
+    async def chat(self,user_history:str ) -> str:
         try: 
-            self.msg.append({"role":"user","name":"纪念","content":prompt})
+            self.user_history=user_history
+            self.msg.append({"role":"user","name":"纪念","content":self.user_history})
             response=await self.client.chat.completions.create(
             model="deepseek-ai/DeepSeek-V3.2", 
             messages=self.msg,

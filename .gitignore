@@ -10,3 +10,5 @@ __pycache__/
 启动虚拟环境.txt
 一键启动.bat
 NapCat.Shell.Windows.OneKey
+
+bot_test.py
