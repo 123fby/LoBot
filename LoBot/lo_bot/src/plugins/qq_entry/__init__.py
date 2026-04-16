@@ -14,7 +14,8 @@ AI_chat=on_message(
 async def handle_msg(matcher: Matcher, event:Event):
     msg: Message=event.get_message()
     msg_text: str=msg.extract_plain_text()
+    ai_msg=await ai_chat.process_msg(msg_text)
     if msg_text:
-        await matcher.send(await ai_chat.process_msg(msg_text))
+        await matcher.send(ai_msg)
     else:
         await matcher.send("hello")
