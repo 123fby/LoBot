@@ -1,0 +1,12 @@
+{
+    "Divination": {
+        "aliases": [
+            "divination",
+            "算命",
+            "占卜",
+            "Divination"
+        ],
+        "description": "占卜插件",
+        "enable": "True"
+    }
+}

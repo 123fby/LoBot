@@ -8,9 +8,9 @@ driver = nonebot.get_driver()
 driver.register_adapter(OneBotAdapter)
 nonebot.load_builtin_plugins("echo")
 # nonebot.load_plugins("LoBot/lo_bot/plugins")
-if Path("lo_bot/src/plugins").exists():
+if Path("lo_bot/src/plugins/qq_entry.py").exists():
     print("存在----------------------------------------------------------------------------------------------")
-    nonebot.load_plugins(Path("lo_bot/src/plugins"))
+    nonebot.load_plugin(Path("lo_bot/src/plugins/qq_entry"))
 else:
     print("不存在----------------------------------------------------------------------------------------------")
 
