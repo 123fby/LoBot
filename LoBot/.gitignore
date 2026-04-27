@@ -1,0 +1,15 @@
+#python缓存
+__pycache__/
+#编译器位置
+.idea/
+.vscode/
+
+#环境密钥
+.env
+.env.prod
+启动虚拟环境.txt
+一键启动.bat
+NapCat.Shell.Windows.OneKey
+#启动虚拟环境
+.\.venv\Scripts\Activate.ps1
+bot_test.py

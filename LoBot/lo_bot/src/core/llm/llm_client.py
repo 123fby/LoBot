@@ -35,7 +35,7 @@ class LLMClient:
             self.user_history=user_history
             self.msg.append({"role":"user","name":"纪念","content":self.user_history})
             response=await self.client.chat.completions.create(
-            model="deepseek-ai/DeepSeek-V3.2", 
+            model="deepseek-ai/DeepSeek-V4-Flash", 
             messages=msg,
             temperature=0.7,
             max_tokens=1024,
@@ -71,7 +71,7 @@ class LLMClient:
             self.temp_msg.append({"role": "system", "content": think_prompt})
             self.temp_msg.append({"role": "user", "name": "纪念", "content": self.user_history})
             response = await self.client.chat.completions.create(
-                model="deepseek-ai/DeepSeek-R1", 
+                model="deepseek-ai/DeepSeek-V3", 
                 messages=self.temp_msg,
                 temperature=0.7,
                 max_tokens=1024,

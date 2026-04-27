@@ -15,11 +15,11 @@ class ChatFlow:
         self.ai_chat=LLMClient()
         self.memory_manager=MemoryManager()
         self.memory= self.memory_manager.read_memory()
-        self.ai_chat.msg.append({"role":"system","content":f"这是你的记忆:"})
-        self.ai_chat.msg.append(self.memory)
+        self.ai_chat.msg.append({"role":"system","content":f"这是你的记忆:{self.memory}"})
     async def process_msg(self,msg)->str:
         print("处理消息")
         _msg=await self.ai_chat.think(msg)
+        print("洛洛 思考结果:",_msg)
         try :
             # 尝试解析 JSON
             print("当前记忆:",self.ai_chat.msg)
