@@ -3,13 +3,19 @@ from datetime import datetime
 from lo_bot.src.core.llm.llm_client import LLMClient
 import json
 import os
+from typing import Dict,Any,List
 from loguru import logger
+from lo_bot.src.core.memory.PG.conncet import PGConnection
 class MemoryManager:
     def __init__(self):
         self.llm_client = LLMClient()
+        self.pg_connection=PGConnection()
         self.memory_dir = Path("lo_bot/src/core/memory/memory.json")
         self.time : str=""
-    async def write_memory(self,rsp_user:str,rsp_bot:str):
+    async def connect(self) :
+        await self.pg_connection.connect()
+
+    async def write_memory(self,msg_info:Dict,rsp_bot:str):
         await self.get_time()
         if os.path.getsize(self.memory_dir)==0:
                 data={}
@@ -17,8 +23,12 @@ class MemoryManager:
             with open(Path(self.memory_dir),"r",encoding="utf-8") as f:
                 data=json.load(f)      #空文件读取会直接报错   
         data[self.time]={
-            "user":rsp_user,
-            "bot":rsp_bot,
+            "scene_type":msg_info["scene_type"],
+            "group_id":msg_info["group_id"],
+            "user_id":msg_info["user_id"],
+            "user_name":msg_info["nickname"],
+            "user_msg":msg_info["msg"],
+            "assistant":rsp_bot,
         }
         if len(data)>8:
             """

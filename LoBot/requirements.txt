@@ -1,0 +1,28 @@
+# 核心依赖
+nonebot2[fastapi]>=2.5.0
+nonebot-adapter-onebot>=2.4.6
+
+# LLM 相关
+openai>=2.32.0
+
+# 配置和工具
+python-dotenv>=1.2.2
+toml>=0.10.2
+loguru>=0.7.2
+
+# 其他依赖（可能由 nonebot 自动安装）
+anyio
+certifi
+colorama
+distro
+h11
+httpcore
+httpx
+idna
+jiter
+pydantic
+pydantic-settings
+sniffio
+tqdm
+typing_extensions
+fastapi

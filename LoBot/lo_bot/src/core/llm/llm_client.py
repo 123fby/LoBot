@@ -23,17 +23,18 @@ class LLMClient:
             base_url=self.BASE_URL,
             timeout=60,
         )
-        self.msg=[]
+        self.msg={}
         self.temp_msg=[]
         self.user_history:str=""
         self.prompt=[{"role":"system","content":f"你是{character_profile['name']},以下是你的个人信息:{character_profile},说话风格:{language_style}"}]
-    async def chat(self,user_history:str ) -> str:
+        self.msg["system"]=self.prompt
+        self.msg["user"]=[]
+       
+    async def chat(self,user_history:str ,user_name:str=None,user_id:str=None) -> str:
         try: 
-            msg=self.msg
-            if self.prompt[0] not in msg:
-                msg.append(*self.prompt)
             self.user_history=user_history
-            self.msg.append({"role":"user","name":"纪念","content":self.user_history})
+            self.msg["user"].append({"role":"user","content":f"用户名称:{user_name},用户ID:{user_id},用户对话:{user_history}"})
+            msg=self.msg["system"][-3:]+self.msg["user"][-10:]
             response=await self.client.chat.completions.create(
             model="deepseek-ai/DeepSeek-V4-Flash", 
             messages=msg,
@@ -42,7 +43,7 @@ class LLMClient:
             top_p=0.9,
         )
             self.rsp=response.choices[0].message.content.strip() 
-            await self.add_history()
+            await self.manage_history()
             return self.rsp
         except Exception as e:
             return f"AI 调用失败: {str(e)}" 
@@ -64,12 +65,11 @@ class LLMClient:
 4. 不要添加任何解释、对话或其他内容，只返回 JSON 格式
 
 用户历史对话：{user_history}
-思考决策：
 """
             
-            self.temp_msg = self.msg[-6:]
+            self.temp_msg = self.msg["system"][-6:]
             self.temp_msg.append({"role": "system", "content": think_prompt})
-            self.temp_msg.append({"role": "user", "name": "纪念", "content": self.user_history})
+            self.temp_msg.append({"role": "user", "content": self.user_history})
             response = await self.client.chat.completions.create(
                 model="deepseek-ai/DeepSeek-V3", 
                 messages=self.temp_msg,
@@ -84,8 +84,13 @@ class LLMClient:
             print(f"Error in think: {str(e)}")
             # 出错时返回空列表，确保 json.loads 不会失败
             return "[]" 
-    async def add_history(self):
-        if len(self.msg)>8:
-            self.msg.pop(0)
+    async def manage_history(self):
+        await self.del_history()
+        self.msg["user"].append({"role":"assistant","content":self.rsp})
+    async def del_history(self):
+        if len(self.msg["user"])>10:
+            self.msg["user"]=self.msg["user"][-10:]
             logger.info("删除超过上限的临时记忆")
-        self.msg.append({"role":"assistant","content":self.rsp})
+        if len(self.msg["system"])>5:
+            self.msg["system"]=self.msg["system"][-5:]
+            logger.info("删除超过上限的系统prompt")

@@ -10,7 +10,7 @@ dependencies = [
 ]
 
 [tool.nonebot]
-plugin_dirs = ["lo_bot/src/plugins/qq_entry.py"]
+plugin_dirs = ["lo_bot/src/adapters/qq_entry.py"]
 builtin_plugins = ["echo"]
 
 [tool.nonebot.adapters]
