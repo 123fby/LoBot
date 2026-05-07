@@ -1,0 +1,5 @@
+database="lolo_memory"
+user=""
+password=""
+host="localhost"
+port=5432
