@@ -26,7 +26,7 @@ class LLMClient:
         self.msg={}
         self.temp_msg=[]
         self.user_history:str=""
-        self.prompt=[{"role":"system","content":f"你是{character_profile['name']},以下是你的个人信息:{character_profile},说话风格:{language_style}"}]
+        self.prompt=[{"role":"system","content":f"你是{character_profile['name']},以下是你的个人信息:{character_profile},说话风格:{language_style},回复时忽略用户ID,用户名称和用户ID仅用于告诉你是谁在与你聊天"}]
         self.msg["system"]=self.prompt
         self.msg["user"]=[]
        
@@ -63,7 +63,7 @@ class LLMClient:
 2. 如果你决定不使用插件，只进行正常聊天，请严格返回：[]
 3. 你的回答必须是有效的 JSON 格式，不能包含任何其他文本
 4. 不要添加任何解释、对话或其他内容，只返回 JSON 格式
-
+5. 不允许添加其他符号
 用户历史对话：{user_history}
 """
             

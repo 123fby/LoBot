@@ -26,3 +26,8 @@ sniffio
 tqdm
 typing_extensions
 fastapi
+numpy
+faiss-cpu
+sentence-transformers
+tiktoken
+asyncpg

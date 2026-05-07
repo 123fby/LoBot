@@ -6,46 +6,22 @@ import os
 from typing import Dict,Any,List
 from loguru import logger
 from lo_bot.src.core.memory.PG.conncet import PGConnection
+from lo_bot.src.core.memory.PG.short_item import ShortItem
+
 class MemoryManager:
     def __init__(self):
         self.llm_client = LLMClient()
         self.pg_connection=PGConnection()
         self.memory_dir = Path("lo_bot/src/core/memory/memory.json")
+        self.short_item=ShortItem(self.pg_connection)
         self.time : str=""
     async def connect(self) :
         await self.pg_connection.connect()
+        await self.short_item.create_short_item()
 
     async def write_memory(self,msg_info:Dict,rsp_bot:str):
-        await self.get_time()
-        if os.path.getsize(self.memory_dir)==0:
-                data={}
-        else:
-            with open(Path(self.memory_dir),"r",encoding="utf-8") as f:
-                data=json.load(f)      #空文件读取会直接报错   
-        data[self.time]={
-            "scene_type":msg_info["scene_type"],
-            "group_id":msg_info["group_id"],
-            "user_id":msg_info["user_id"],
-            "user_name":msg_info["nickname"],
-            "user_msg":msg_info["msg"],
-            "assistant":rsp_bot,
-        }
-        if len(data)>8:
-            """
-            next()拿到第一个键,iter()拿到键的迭代器""" 
-            data.pop(next(iter(data)))
-            logger.info("删除旧短期记忆")
-        with open(Path(self.memory_dir),"w",encoding="utf-8") as f:
-            json.dump(data,f,ensure_ascii=False,indent=4)
-
-    async def get_time(self):
-        self.time=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    def read_memory(self)->dict:
-        try :
-            with open(Path(self.memory_dir),"r",encoding="utf-8") as f:
-                data=json.load(f)
-                return data
-        except FileNotFoundError as e:
-            logger.error(e)
-            logger.info("创建新记忆啦")
-            data={}
+        await self.short_item.insert_msg(msg_info,rsp_bot)
+    async def init_mem(self):
+        return await self.short_item.get_short_item()
+       
+     

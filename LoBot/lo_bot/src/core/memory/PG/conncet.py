@@ -17,7 +17,7 @@ class PGConnection:
             password=self.password,
             max_size=10,
             min_size=5,
-            timeout=60
+            timeout=60,
             )
             logger.info("数据库连接成功")
             async with self.pool.acquire() as conn:
@@ -36,8 +36,9 @@ class PGConnection:
                 logger.info("数据库连接信息加载成功")
         except FileNotFoundError:
             logger.error("数据库连接信息文件不存在，已创建默认配置文件,请输入配置信息到config/pg_connect.toml")
+            default_config={"host":"localhost","port":5432,"database":"","user":"","password":""}
             with open(Path("lo_bot/config/pg_connect.toml"), "w",encoding="utf-8") as f:
-                f.write(toml.dumps({"host":"localhost","port":5432,"database":"","user":"","password":""}))
+                f.write(toml.dumps(default_config))
                 logger.info("默认配置文件已创建")
         self.host=pg_config.get("host")
         self.port=pg_config.get("port")

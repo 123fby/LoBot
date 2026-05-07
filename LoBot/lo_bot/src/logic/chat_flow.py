@@ -16,20 +16,20 @@ class ChatFlow:
         self.pm=PluginsManager()
         self.ai_chat=LLMClient()
         self.memory_manager=MemoryManager()
-        self.memory= self.memory_manager.read_memory()
-        self.ai_chat.msg["system"].append({"role":"system","content":f"这是你的记忆:{self.memory}"})
     async def initialize(self) :
          await self.memory_manager.connect()
-
+         self.memory= await self.memory_manager.init_mem()   
+         self.ai_chat.msg["system"].append({"role":"system","content":f"这是你的记忆:{self.memory}"})
+         logger.info(f"落落记起来啦！{self.memory}")
     async def process_msg(self,msg_info)->str:
         logger.info("处理消息")
         msg=msg_info["msg"]
         logger.info(f"Received message: {msg}")
         _msg=await self.ai_chat.think(msg)
-        logger.info("洛洛 思考结果:",_msg)
+        logger.info(f"洛洛 思考结果:{_msg}")
         try :
             # 尝试解析 JSON
-            logger.info("当前prompts:",self.ai_chat.msg["system"])
+            logger.info(f"当前prompts:{self.ai_chat.msg['system']}")
             t_msg=json.loads(_msg)
             match t_msg:
                 case ["plugin",plugin_name]: 
@@ -38,7 +38,7 @@ class ChatFlow:
                     logger.info(f"插件结果: {t_reply}")
                     self.ai_chat.msg["system"].append({"role":"system","content":f"{t_reply}是你使用{plugin_name}工具的结果"})
                     logger.info(f"添加插件结果到系统prompt: {self.ai_chat.msg['system'][-1]}")
-                    reply=await self.ai_chat.chat(t_reply)
+                    reply=await self.ai_chat.chat(t_reply,user_name=msg_info["nickname"],user_id=msg_info["user_id"])
                 case _:
                     logger.info("普通消息")
                     reply=await self.ai_chat.chat(msg,user_name=msg_info["nickname"],user_id=msg_info["user_id"])

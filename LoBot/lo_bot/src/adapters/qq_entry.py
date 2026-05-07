@@ -13,8 +13,9 @@ AI_chat=on_message(
 )
 @AI_chat.handle()
 async def handle_msg(matcher: Matcher, event:Event):
-    ai_chat=get_chat_flow()
+    
     try:
+        ai_chat=get_chat_flow()
         msg_info=await msg_parser(event)
         logger.info(msg_info)
         logger.info("洛洛要处理消息啦")
