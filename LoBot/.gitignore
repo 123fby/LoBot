@@ -7,7 +7,7 @@ __pycache__/
 #环境密钥
 .env
 #数据库连接信息
-lo_bot/config/pg_connect.toml
+lo_bot/config/
 
 .env.prod
 启动虚拟环境.txt
