@@ -2,7 +2,7 @@
 import asyncpg
 from loguru import logger
 import toml
-from pathlib import Path
+from lo_bot.shared import load_config
 class PGConnection:
     def __init__(self):
         self.pool=None
@@ -30,16 +30,7 @@ class PGConnection:
             logger.error(f"数据库连接失败: {str(e)}")
             raise e
     def get_config(self):
-        try:
-            with open(Path("lo_bot/config/pg_connect.toml"), "r",encoding="utf-8") as f:
-                pg_config = toml.load(f)
-                logger.info("数据库连接信息加载成功")
-        except FileNotFoundError:
-            logger.error("数据库连接信息文件不存在，已创建默认配置文件,请输入配置信息到config/pg_connect.toml")
-            default_config={"host":"localhost","port":5432,"database":"","user":"","password":""}
-            with open(Path("lo_bot/config/pg_connect.toml"), "w",encoding="utf-8") as f:
-                f.write(toml.dumps(default_config))
-                logger.info("默认配置文件已创建")
+        pg_config= load_config("lo_bot/config/pg_config.toml",host="localhost",port="5432",database="",user="",password="")
         self.host=pg_config.get("host")
         self.port=pg_config.get("port")
         self.database=pg_config.get("database")

@@ -1,5 +1,5 @@
 database="lolo_memory"
-user=""
-password=""
+user="jinian"
+password="htlp5201314"
 host="localhost"
 port=5432

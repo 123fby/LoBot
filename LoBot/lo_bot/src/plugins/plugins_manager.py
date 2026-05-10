@@ -93,9 +93,9 @@ class PluginsManager:
     def main(self):
         self.load_plugins()
 
-    async def to_plugin(self,plugin_name,msg=None):
+    async def to_plugin(self,plugin_name,msg=None,**kwargs):
         name=self.remap[plugin_name]
-        return await self.plugin[name].main(msg)
+        return await self.plugin[name].main(msg,**kwargs)
     
 if __name__ == "__main__":
     pm=PluginsManager()

@@ -1,22 +1,32 @@
 import asyncpg
 from loguru import logger
-from lo_bot.src.core.memory.PG.conncet import PGConnection as pg
+from lo_bot.src.db.PG.conncet import PGConnection as pg
 from typing import Dict
 class ShortItem:
     def __init__(self,pg:pg):
         self.pg=pg
     async def create_short_item(self) :
         async with self.pg.pool.acquire() as conn:
+            """sentence embedding 维度为384 model: all-MiniLM-L6-v2"""
+            """create_at timestamptz default now() 自动记录创建时间
+            scene_type 场景类型 group_id 群id user_id 用户id user_name 用户昵称 user_msg 用户消息 assistant 洛洛回复 embedding 向量(维度384)
+            weigth 1-10 代表重要程度 decay_rate 0-1 代表衰减率 call_count 调用次数 decay_worth 代表衰减价值"""
             if  await conn.execute("""create table if not exists short_item (
-                 id serial primary key,
+                id serial primary key,
                 create_at timestamptz default now(),
                 scene_type text ,
                 group_id text,
                 user_id text,
                 user_name text,
                 user_msg text,
-                assistant text
+                assistant text,
+
+                weight integer,
+                decay_rate float,
+                call_count integer,
+                decay_worth int
               )"""):
+                # await conn.execute("""""")
                 logger.info("创建短期记忆表")
             else:
                 logger.error("短期记忆表已存在")

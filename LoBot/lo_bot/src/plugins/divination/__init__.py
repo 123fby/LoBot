@@ -37,7 +37,7 @@ class Divination(PluginsBase):
         with open(Path(__file__).parent.joinpath("content.json"),"r",encoding="utf-8") as f:
             content =json.load(f)
         return content
-    async def match(self,question:str)->bool:
+    async def match(self,question:str="占卜")->bool:
         """匹配是否是占卜"""
         if re.search(r"算命|占卜",question):
             return True

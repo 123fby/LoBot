@@ -5,8 +5,8 @@ import json
 import os
 from typing import Dict,Any,List
 from loguru import logger
-from lo_bot.src.core.memory.PG.conncet import PGConnection
-from lo_bot.src.core.memory.PG.short_item import ShortItem
+from lo_bot.src.db.PG.conncet import PGConnection
+from lo_bot.src.db.PG.short_item import ShortItem
 
 class MemoryManager:
     def __init__(self):
