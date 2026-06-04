@@ -31,3 +31,4 @@ faiss-cpu
 sentence-transformers
 tiktoken
 asyncpg
+psutil
