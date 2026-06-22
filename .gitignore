@@ -10,3 +10,6 @@ __pycache__/
 LoBot/lo_bot/config/pg_config.toml
 LoBot/lo_bot/config/whitelist.toml
 .env.prod
+
+pytest_lolo/
+pytest_lolo/test_*.py

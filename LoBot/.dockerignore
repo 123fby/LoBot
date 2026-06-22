@@ -1,0 +1,17 @@
+#忽略环境
+.venv
+venv
+env
+#忽略Python缓存等
+__pycache__/
+*.pyc
+*.pyo
+.idea/
+.vscode/
+.git
+
+pytest_lolo
+.env
+.env.dev
+LoBot/lo_bot/config/pg_config.toml
+LoBot/lo_bot/config/whitelist.toml
